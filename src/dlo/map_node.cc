@@ -9,25 +9,18 @@
 
 #include "dlo/map.h"
 
-void controlC(int sig) {
-
-  dlo::MapNode::abort();
-
-}
 
 int main(int argc, char** argv) {
 
-  ros::init(argc, argv, "dlo_map_node");
-  ros::NodeHandle nh("~");
+  rclcpp::init(argc, argv);
 
-  signal(SIGTERM, controlC);
-  sleep(0.5);
+  auto node = std::make_shared<dlo::MapNode>();
+  rclcpp::executors::MultiThreadedExecutor executor;
 
-  dlo::MapNode node(nh);
-  ros::AsyncSpinner spinner(1);
-  spinner.start();
-  node.start();
-  ros::waitForShutdown();
+  executor.add_node(node);
+  executor.spin();
+
+  rclcpp::shutdown();
 
   return 0;
 
