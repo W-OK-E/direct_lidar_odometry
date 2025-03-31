@@ -344,7 +344,7 @@ void dlo::OdomNode::publishPose() {
 
   q_last = this->rotq;
 
-  this->odom.pose.pose.position.x = this->pose[0];
+  this->odom.pose.pose.position.x = this->pose[0]*-1;
   this->odom.pose.pose.position.y = this->pose[1];
   this->odom.pose.pose.position.z = this->pose[2];
 
@@ -361,7 +361,7 @@ void dlo::OdomNode::publishPose() {
   this->pose_ros.header.stamp = this->scan_stamp;
   this->pose_ros.header.frame_id = this->odom_frame;
 
-  this->pose_ros.pose.position.x = this->pose[0];
+  this->pose_ros.pose.position.x = this->pose[0]*-1;
   this->pose_ros.pose.position.y = this->pose[1];
   this->pose_ros.pose.position.z = this->pose[2];
 
@@ -387,7 +387,7 @@ void dlo::OdomNode::publishTransform() {
   transformStamped.header.frame_id = this->odom_frame;
   transformStamped.child_frame_id = this->child_frame;
 
-  transformStamped.transform.translation.x = this->pose[0];
+  transformStamped.transform.translation.x = this->pose[0]*-1;
   transformStamped.transform.translation.y = this->pose[1];
   transformStamped.transform.translation.z = this->pose[2];
 
@@ -412,7 +412,7 @@ void dlo::OdomNode::publishKeyframe() {
   this->kf.header.frame_id = this->odom_frame;
   this->kf.child_frame_id = this->child_frame;
 
-  this->kf.pose.pose.position.x = this->pose[0];
+  this->kf.pose.pose.position.x = this->pose[0]*-1;
   this->kf.pose.pose.position.y = this->pose[1];
   this->kf.pose.pose.position.z = this->pose[2];
 
@@ -1108,7 +1108,7 @@ void dlo::OdomNode::updateKeyframes() {
   for (const auto& k : this->keyframes) {
 
     // calculate distance between current pose and pose in keyframes
-    float delta_d = sqrt( pow(this->pose[0] - k.first.first[0], 2) + pow(this->pose[1] - k.first.first[1], 2) + pow(this->pose[2] - k.first.first[2], 2) );
+    float delta_d = sqrt( pow(this->pose[0]*-1 - k.first.first[0], 2) + pow(this->pose[1] - k.first.first[1], 2) + pow(this->pose[2] - k.first.first[2], 2) );
 
     // count the number nearby current pose
     if (delta_d <= this->keyframe_thresh_dist_ * 1.5){
@@ -1130,7 +1130,7 @@ void dlo::OdomNode::updateKeyframes() {
   Eigen::Quaternionf closest_pose_r = this->keyframes[closest_idx].first.second;
 
   // calculate distance between current pose and closest pose from above
-  float dd = sqrt( pow(this->pose[0] - closest_pose[0], 2) + pow(this->pose[1] - closest_pose[1], 2) + pow(this->pose[2] - closest_pose[2], 2) );
+  float dd = sqrt( pow(this->pose[0]*-1 - closest_pose[0], 2) + pow(this->pose[1] - closest_pose[1], 2) + pow(this->pose[2] - closest_pose[2], 2) );
 
   // calculate difference in orientation
   Eigen::Quaternionf dq = this->rotq * (closest_pose_r.inverse());
@@ -1413,10 +1413,10 @@ void dlo::OdomNode::debug() {
   }
 
   std::cout << std::endl << std::setprecision(4) << std::fixed;
-  std::cout << "Position    [xyz]  :: " << this->pose[0] << " " << this->pose[1] << " " << this->pose[2] << std::endl;
+  std::cout << "Position    [xyz]  :: " << this->pose[0]*-1 << " " << this->pose[1] << " " << this->pose[2] << std::endl;
   std::cout << "Orientation [wxyz] :: " << this->rotq.w() << " " << this->rotq.x() << " " << this->rotq.y() << " " << this->rotq.z() << std::endl;
   std::cout << "Distance Traveled  :: " << length_traversed << " meters" << std::endl;
-  std::cout << "Distance to Origin :: " << sqrt(pow(this->pose[0]-this->origin[0],2) + pow(this->pose[1]-this->origin[1],2) + pow(this->pose[2]-this->origin[2],2)) << " meters" << std::endl;
+  std::cout << "Distance to Origin :: " << sqrt(pow(this->pose[0]*-1-this->origin[0],2) + pow(this->pose[1]-this->origin[1],2) + pow(this->pose[2]-this->origin[2],2)) << " meters" << std::endl;
 
   std::cout << std::endl << std::right << std::setprecision(2) << std::fixed;
   std::cout << "Computation Time :: " << std::setfill(' ') << std::setw(6) << this->comp_times.back()*1000. << " ms    // Avg: " << std::setw(5) << avg_comp_time*1000. << std::endl;
