@@ -7,20 +7,18 @@
 #                                                           #
 #############################################################
 
-dlo:
+/**:
+  ros__parameters:
 
-  version: 1.4.3
+      dlo/version: 1.4.3
 
-  adaptiveParams: true
+      dlo/adaptiveParams: true
 
-  imu: true
-  gravityAlign: true
+      dlo/imu: false
+      dlo/gravityAlign: false
 
-  odomNode:
-    odom_frame: odom
-    child_frame: base_link
+      dlo/odomNode/odom_frame: "odom"   #odom
+      dlo/odomNode/child_frame: "base_link"    #base_link
 
-  mapNode:
-    publishFullMap: true
-    publishFreq: 1.0
-    leafSize: 0.25
+      dlo/mapNode/publishFreq: 1.0
+      dlo/mapNode/leafSize: 0.25
