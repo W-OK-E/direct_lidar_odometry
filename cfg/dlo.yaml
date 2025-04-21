@@ -17,8 +17,8 @@
       dlo/imu: false
       dlo/gravityAlign: false
 
-      dlo/odomNode/odom_frame: "odom"   #odom
-      dlo/odomNode/child_frame: "base_link"    #base_link
+      dlo/odomNode/odom_frame: "robot/odom"   #odom
+      dlo/odomNode/child_frame: "robot/base_link"    #base_link
 
       dlo/mapNode/publishFreq: 1.0
       dlo/mapNode/leafSize: 0.25
